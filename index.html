@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tabel Penjualan & Komparasi Estimasi Harga Pasar vs Supermarket Jakarta - NXG Natal 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎄</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="light">
+  <div class="container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-top">
+        <div class="brand">
+          <div class="brand-icon">🎄</div>
+          <div class="brand-text">
+            <h1>
+              BAZAAR NXG NATAL 2026
+              <span class="brand-tag">Estimasi Jakarta</span>
+            </h1>
+            <p>Komparasi Estimasi: Pasar Tradisional vs Supermarket</p>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button id="btnThemeToggle" class="btn btn-outline btn-icon" title="Mode Terang / Gelap">
+            🌙
+          </button>
+        </div>
+      </div>
+
+      <!-- Comparison Highlight Banner -->
+      <div class="comparison-banner">
+        <div class="comparison-banner-content">
+          <h2>
+            <span>⚖️</span> Hasil Komparasi Estimasi Belanja Jakarta
+            <span class="saving-badge" id="bannerSavingBadge">Estimasi Hemat Rp 324.000 (28%)</span>
+          </h2>
+          <p id="bannerSavingText">
+            Belanja di Pasar Tradisional Jakarta memberikan estimasi penghematan modal kas yang signifikan dibanding Supermarket.
+          </p>
+        </div>
+        <div>
+          <button id="btnResetData" class="btn btn-outline" style="font-size: 0.75rem; padding: 5px 10px;">
+            🔄 Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Mode Switcher (Touch-friendly selector) -->
+      <div class="market-selector-bar">
+        <div class="market-buttons">
+          <button class="market-btn compare active" data-mode="compare">
+            ⚖️ Bandingkan
+          </button>
+          <button class="market-btn pasar" data-mode="pasar">
+            🏪 Pasar Tradisional
+          </button>
+          <button class="market-btn supermarket" data-mode="supermarket">
+            🏬 Supermarket
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- 4 Ringkasan Angka Penting -->
+    <section class="summary-grid">
+      <div class="summary-card card-target">
+        <div class="summary-card-header">
+          <span class="card-icon">📦</span>
+          <span class="summary-card-title">Target Porsi</span>
+        </div>
+        <div class="summary-card-value" id="kpiTotalPorsi">0 Porsi</div>
+        <div class="summary-card-desc">Target seluruh menu</div>
+      </div>
+
+      <div class="summary-card card-modal">
+        <div class="summary-card-header">
+          <span class="card-icon">💰</span>
+          <span class="summary-card-title" id="kpiTitleModal">Est. Modal Kas</span>
+        </div>
+        <div class="summary-card-value" id="kpiTotalModal">Rp 0</div>
+        <div class="summary-card-desc" id="kpiSubModal">Modal disiapkan</div>
+      </div>
+
+      <div class="summary-card card-omzet">
+        <div class="summary-card-header">
+          <span class="card-icon">🏷️</span>
+          <span class="summary-card-title">Est. Omzet</span>
+        </div>
+        <div class="summary-card-value" id="kpiTotalOmzet">Rp 0</div>
+        <div class="summary-card-desc">Pendapatan kotor</div>
+      </div>
+
+      <div class="summary-card highlight card-untung">
+        <div class="summary-card-header">
+          <span class="card-icon">📈</span>
+          <span class="summary-card-title" id="kpiTitleLaba">Est. Untung Bersih</span>
+        </div>
+        <div class="summary-card-value" id="kpiTotalLaba">Rp 0</div>
+        <div class="summary-card-desc" id="kpiSubLaba">Margin rata-rata</div>
+      </div>
+    </section>
+
+    <!-- Navigasi 3 Tab -->
+    <nav class="tab-navigation">
+      <button class="tab-btn active" data-tab="tab-tabel">
+        📋 Simulasi Jual
+      </button>
+      <button class="tab-btn" data-tab="tab-bahan">
+        🛒 Daftar Belanja
+      </button>
+      <button class="tab-btn" data-tab="tab-tips">
+        💡 Tips & Resep
+      </button>
+    </nav>
+
+    <!-- TAB 1: Tabel Penjualan (Desktop Table + Mobile Cards) -->
+    <section class="tab-pane active" id="tab-tabel">
+      <!-- Desktop Table (Screen > 860px) -->
+      <div class="desktop-table-container">
+        <div class="table-scroll">
+          <table class="clean-table" id="tablePenjualan">
+            <thead id="tableHead"></thead>
+            <tbody id="tableBody"></tbody>
+            <tfoot id="tableFoot"></tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Mobile Touch Cards (Screen <= 860px) -->
+      <div class="mobile-cards-container" id="mobileCardsContainer">
+        <!-- Rendered via JS -->
+      </div>
+
+      <p style="font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: 8px;">
+        💡 <strong>Satset:</strong> Tekan tombol <strong>+ / -</strong> untuk ubah porsi cepat atau ketik langsung angkanya. Angka adalah <em>estimasi acuan</em>.
+      </p>
+    </section>
+
+    <!-- TAB 2: Rincian Belanja Bahan Lengkap Pasar vs Supermarket -->
+    <section class="tab-pane" id="tab-bahan">
+      <!-- Disclaimer Box -->
+      <div class="disclaimer-box">
+        💡 <strong>Penting — Acuan Estimasi Harga:</strong> Semua harga bahan di bawah merupakan <strong>estimasi acuan wajar</strong> berdasarkan survei pasar tradisional (Pasar Senen, Pasar Minggu, TBK Jatinegara) dan supermarket (Super Indo, Alfagift, Hypermart) di Jakarta. Harga riil di lapangan dapat berfluktuasi tergantung musim panen buah, ketersediaan stok, promo mingguan toko, dan lokasi pembelian.
+      </div>
+
+      <!-- Filter Menu Belanja Bar -->
+      <div class="belanja-header-box">
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">
+          🔍 PILIH MENU UNTUK LIHAT DAFTAR BAHAN:
+        </div>
+        <div class="filter-menu-pills" id="filterMenuBelanja">
+          <button class="menu-pill-btn active" data-filter="all">✨ Semua Menu (5)</button>
+          <button class="menu-pill-btn" data-filter="mango-jelly-milk">🥭 Mango Jelly Milk</button>
+          <button class="menu-pill-btn" data-filter="pudding-balls">🍓 Pudding Balls</button>
+          <button class="menu-pill-btn" data-filter="es-lumut-coklat">🍫 Es Lumut Coklat</button>
+          <button class="menu-pill-btn" data-filter="mini-corndog">🌭 Mini Corndog</button>
+          <button class="menu-pill-btn" data-filter="chikuwa-cheese-mozzarella">🧀 Chikuwa Moza</button>
+        </div>
+      </div>
+
+      <!-- Clean Belanja Cards List Container -->
+      <div class="belanja-list-container" id="ingredientsContainer">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- TAB 3: Tips Belanja Jakarta & Video Resep -->
+    <section class="tab-pane" id="tab-tips">
+      <div style="margin-bottom: 12px;">
+        <h2 style="font-size: 1.05rem; font-weight: 800; margin-bottom: 2px;">
+          💡 Rekomendasi Belanja di Jakarta & Video Resep
+        </h2>
+        <p style="font-size: 0.8rem; color: var(--text-muted);">
+          Tips belanja hemat dan video tutorial resep asli dari ide kamu.
+        </p>
+      </div>
+
+      <div class="tips-grid">
+        <div class="tip-box">
+          <h3>🏬 1. Wajib Belanja di Pasar Tradisional</h3>
+          <p>
+            • <strong>Kemasan (Botol & Mika):</strong> Beli grosir di toko plastik pasar/Jatinegara (estimasi Rp 1.000/pcs vs supermarket Rp 2.000/pcs).<br>
+            • <strong>Mangga Harum Manis & Buah:</strong> Pasar buah tradisional kiloan jauh lebih segar dan murah ~20-30%.<br>
+            • <strong>Keju Moza & Panir:</strong> Toko Bahan Kue (TBK) pasar jual kemasan repack hemat (Anchor repack 250g @Rp 35rb).
+          </p>
+        </div>
+
+        <div class="tip-box">
+          <h3>🛒 2. Boleh Beli di Supermarket</h3>
+          <p>
+            • <strong>Susu UHT 1L:</strong> Selisihnya hanya Rp 2.000 - Rp 2.500, cari yang promo mingguan.<br>
+            • <strong>Nutrijell & MyVla:</strong> Selisih sedikit, praktis jika terburu-buru.
+          </p>
+        </div>
+
+        <div class="tip-box">
+          <h3>🧊 3. Frozen Food Prep H-1</h3>
+          <p>
+            • Corndog dan Chikuwa sudah ditusuk & dibalur tepung roti dari rumah lalu dibekukan di freezer.<br>
+            • Saat bazaar tinggal goreng 2-3 menit hingga keju melar sempurna!
+          </p>
+        </div>
+
+        <div class="tip-box">
+          <h3>🎥 4. Link Video Tutorial Resep</h3>
+          <div id="videoLinksList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div>
+        <strong>Bazaar NXG Natal 2026</strong> • Estimasi Acuan Pasar vs Supermarket Jakarta
+      </div>
+      <div>
+        Data tersimpan otomatis di browser
+      </div>
+    </footer>
+  </div>
+
+  <!-- Floating Mobile Bottom Bar -->
+  <div class="mobile-floating-bar" id="mobileFloatingBar">
+    <div class="m-float-stat">
+      <span class="m-float-label">Target</span>
+      <span class="m-float-val" id="floatTotalPorsi">0 Porsi</span>
+    </div>
+    <div class="m-float-stat">
+      <span class="m-float-label" id="floatModalLabel">Estimasi Modal</span>
+      <span class="m-float-val" id="floatTotalModal">Rp 0</span>
+    </div>
+    <div class="m-float-stat" style="text-align: right;">
+      <span class="m-float-label">Estimasi Untung</span>
+      <span class="m-float-val profit" id="floatTotalUntung">+Rp 0</span>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
